@@ -5,12 +5,25 @@ makeCacheMatrix <- function(x = matrix()) {
 
         m <- NULL
         set <- function(y) {
+               
+               ## << indicates setting the global variables
+               ## so that it can be accessed in other function also
+               
                 x <<- y
                 m <<- NULL
         }
+        
+        
+        ## set values for setmatrix
         get <- function() x
-        setmatrix <- matrix(m) m <<- x
-        getmatrix <- function() m
+        setmatrix <- matrix(m) 
+        
+        ## set values for getmatrix
+        m <<- x
+        getmatrix <- function(m)
+        
+        ## now create the list which will contain set and get parameters and 2 functions
+        
         list(set = set, get = get,
              setmatrix = setmatrix,
              getmatrix = getmatrix)
@@ -26,17 +39,30 @@ makeCacheMatrix <- function(x = matrix()) {
 ## If the inverse has already been calculated (and the matrix has not changed), 
 ## then the cachesolve  retrieves the inverse from the cache
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-        
-        cachematrix <- function(x, ...) {
+cacheSolve <- function(x) {
+       
+        cachematrix <- function(x) {
         m <- x$getmatrix()
+        
+        
+        ## check and exclude NULL values
+        
         if(!is.null(m)) {
                 message("getting cached data")
                 return(m)
         }
+        
+        ## get matrix values set in data variable 
+        
         data <- x$get()
-        m <- matrix(data, ...)
+        
+        ## calling solve with just one parameter will make it return inverse of matrix
+        
+        m <- solve(data)
         x$setmatrix(m)
+       
+        ## Return m ,which is a matrix that is the inverse of 'x'
         m
 }
+
+## end of function cachesolve
