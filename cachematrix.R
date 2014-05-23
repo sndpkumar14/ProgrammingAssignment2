@@ -14,12 +14,19 @@ makeCacheMatrix <- function(x = matrix()) {
         }
         
         
+        ## get matrix dimensions, 1st element is number of rows, second element is number of colums
+        rw <- dim(x)[1]
+        cl <- dim(x)[2]
+        
         ## set values for setmatrix
+        
         get <- function() x
-        setmatrix <- matrix(m) 
+        setmatrix <- matrix(m,rw,cl) 
         
         ## set values for getmatrix
         m <<- x
+        
+       
         getmatrix <- function(m)
         
         ## now create the list which will contain set and get parameters and 2 functions
@@ -56,7 +63,7 @@ cacheSolve <- function(x) {
         
         data <- x$get()
         
-        ## calling solve with just one parameter will make it return inverse of matrix
+        ## calling solve() with just one parameter will make it return inverse of matrix
         
         m <- solve(data)
         x$setmatrix(m)
